@@ -1,5 +1,6 @@
 from tkinter import *
 from tkinter import messagebox
+import json
 
 window=Tk()
 window.title("Password Manager")
@@ -32,7 +33,7 @@ website_entry.focus()
 
 def generate_password():
     import random
-    characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()"
+    characters = "abcdefghijklmnopqrstuvwxyzA{BCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()"
     password = ''.join(random.choice(characters) for i in range(12))
     password_entry.insert(0, password)
     
@@ -40,19 +41,32 @@ def add_password():
     website = website_entry.get()
     email = email_entry.get()
     password = password_entry.get()
+    new_data={
+        website: {
+            "email":email,
+            "password":password
+    }
+              }
     
     if len(website) == 0 or len(email) == 0 or len(password) == 0:
         messagebox.showinfo(title="Oops", message="Please make sure you haven't left any fields empty.")
         return
+    else:
+        try:
+            with open("passwords.json", "r") as file:
+                data=json.load(file)
+        except FileNotFoundError:
+            with open("passwords.json", "w") as file:
+                json.dump(new_data, file, indent=4)
+        else:
+            data.update(new_data)
 
-    confirm=messagebox.askokcancel(title=website,message=f"These are the details entered: \nEmail: {email}\nPassword: {password} \nIs it ok to save?")
-    if confirm:
-        with open("passwords.txt", "a") as file:
-            file.write(f"{website} | {email} | {password}\n")
-
-    website_entry.delete(0, END)
-    email_entry.delete(0, END)
-    password_entry.delete(0, END)
+            with open("passwords.json", "w") as file:
+                json.dump(data, file, indent=4)
+        finally:
+            website_entry.delete(0, END)
+            email_entry.delete(0, END)
+            password_entry.delete(0, END)
     
     
 

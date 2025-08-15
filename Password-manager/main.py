@@ -18,12 +18,12 @@ label.grid(row=1,column=0)
 email.grid(row=2,column=0)
 password.grid(row=3,column=0)
 
-website_entry=Entry(width=35)
-email_entry=Entry(width=35)
+website_entry=Entry(width=21)
+email_entry=Entry(width=40)
 password_entry=Entry(width=21)
 
 
-website_entry.grid(row=1,column=1,columnspan=2)
+website_entry.grid(row=1,column=1)
 email_entry.grid(row=2,column=1,columnspan=2)   
 password_entry.grid(row=3,column=1)
 
@@ -67,12 +67,22 @@ def add_password():
             website_entry.delete(0, END)
             email_entry.delete(0, END)
             password_entry.delete(0, END)
-    
-    
 
+def search():
+    website=website_entry.get()
+    with open("passwords.json", "r") as file:
+        data=json.load(file)
+    if website in data:
+        email=data[website]["email"]
+        password=data[website]["password"]
+        messagebox.showinfo(title=website, message=f"Email: {email}\nPassword: {password}")
+    else:
+        messagebox.showinfo(title="Error", message="No details found for the website.")
 
 gen_password_button=Button(text="Generate Password",command=generate_password)
-gen_password_button.grid(row=3,column=2)
+gen_password_button.grid(row=3,column=2,pady=2)
 add_button=Button(text="Add",width=36,command=add_password)
 add_button.grid(row=4,column=1,columnspan=2)
+search_button=Button(text="Search",width=14,command=search)
+search_button.grid(column=2,row=1,pady=2)
 window.mainloop()

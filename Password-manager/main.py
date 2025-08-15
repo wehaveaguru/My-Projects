@@ -1,11 +1,12 @@
 from tkinter import *
+from tkinter import messagebox
 
 window=Tk()
 window.title("Password Manager")
 window.config(padx=50,pady=50)
 
 canvas=Canvas(height=200,width=200)
-logo_img=PhotoImage(file="logo.png")
+logo_img=PhotoImage(file=r"c:\Users\AnbeeRadhaiNandPush\OneDrive\Documents\Nandhalala\Python\projects\git\My-Projects\Password-manager\logo.png")
 canvas.create_image(100,100,image=logo_img)
 canvas.grid(row=0,column=1)
 
@@ -41,12 +42,14 @@ def add_password():
     password = password_entry.get()
     
     if len(website) == 0 or len(email) == 0 or len(password) == 0:
-        print("Please fill out all fields.")
+        messagebox.showinfo(title="Oops", message="Please make sure you haven't left any fields empty.")
         return
-    
-    with open("passwords.txt", "a") as file:
-        file.write(f"{website} | {email} | {password}\n")
-    
+
+    confirm=messagebox.askokcancel(title=website,message=f"These are the details entered: \nEmail: {email}\nPassword: {password} \nIs it ok to save?")
+    if confirm:
+        with open("passwords.txt", "a") as file:
+            file.write(f"{website} | {email} | {password}\n")
+
     website_entry.delete(0, END)
     email_entry.delete(0, END)
     password_entry.delete(0, END)

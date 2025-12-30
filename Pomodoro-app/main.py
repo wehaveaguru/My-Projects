@@ -63,7 +63,7 @@ window.title("Pomodoro App")
 window.config(padx=200, pady=100,bg=YELLOW)
 
 canvas=Canvas(width=200, height=224,bg=YELLOW,highlightthickness=0)
-tomato_img=PhotoImage(file="tomato.png")
+tomato_img=PhotoImage(file=r"C:\Users\Guru Nandhalala A\OneDrive\Documents\Git\My-Projects")
 canvas.create_image(100, 100, image=tomato_img)
 timer_text=canvas.create_text(100, 130, text="00:00", fill="white", font=("Courier", 35, "bold"))
 canvas.grid(column=1, row=1)
